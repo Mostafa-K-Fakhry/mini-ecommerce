@@ -35,12 +35,12 @@ const ProductSchema = mongoose.Schema(
         stock:
         {
             type: Number,
-            required: [true,"Please, Enter The price of product!"],
+            required: [true,"Please, Enter The stock of product!"],
         },
         createdBy:
         {
             type: mongoose.Schema.ObjectId,
-            ref: 'Users',
+            ref: 'User',
         },
     },
     {
