@@ -1,50 +1,54 @@
-const mongoose = require('mongoose')
-const ProductSchema = mongoose.Schema(
+const mongoose = require("mongoose");
+
+const ProductSchema = new mongoose.Schema(
     {
-        title:
-        {
+        title: {
             type: String,
-            required: [true,"Please, Enter The title of product!"],
-            minLength:[3,"Title must be more than 3 characters long."],
-            maxLength:[150,"Title of product must not exceed more than 150 characters."],
+            required: [true, "Please, enter the title of the product"],
+            minlength: [3, "Title must be at least 3 characters long"],
+            maxlength: [150, "Title must not exceed 150 characters"]
         },
-        description:
-        {
+
+        description: {
             type: String,
-            required: [true,"Please, Enter The description of product!"],
-            minLength:[20,"Description must be more than 20 characters long."],
-            maxLength:[2000,"Description of product must not exceed more than 2000 characters."],
+            required: [true, "Please, enter the description of the product"],
+            minlength: [20, "Description must be at least 20 characters long"],
+            maxlength: [2000, "Description must not exceed 2000 characters"]
         },
-        price:
-        {
+
+        price: {
             type: Number,
-            required: [true,"Please, Enter The price of product!"],
+            required: [true, "Please, enter the price of the product"],
+            min: [0.01, "Price must be greater than 0"]
         },
-        image:
-        {
+
+        image: {
             type: String,
-            required: [true,"Please, Enter The link of image!"],
+            required: [true, "Please, enter the image URL"]
         },
-        category:
-        {
+
+        category: {
             type: String,
-            required: [true,"Please, Enter The category of product!"],
-            minLength:[2,"Category must be more than 2 characters long."],
-            maxLength:[50,"Category of product must not exceed more than 50 characters."],
+            required: [true, "Please, enter the category of the product"],
+            minlength: [2, "Category must be at least 2 characters long"],
+            maxlength: [50, "Category must not exceed 50 characters"]
         },
-        stock:
-        {
+
+        stock: {
             type: Number,
-            required: [true,"Please, Enter The stock of product!"],
+            required: [true, "Please, enter the stock quantity"],
+            min: [0, "Stock cannot be negative"]
         },
-        createdBy:
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: 'User',
-        },
+
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: [true, "Product creator is required"]
+        }
     },
     {
-        timestamps:true
+        timestamps: true
     }
-)
-module.exports = mongoose.model('Product',ProductSchema)
+);
+
+module.exports = mongoose.model("Product", ProductSchema);
