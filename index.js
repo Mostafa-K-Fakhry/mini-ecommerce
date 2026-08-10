@@ -13,23 +13,22 @@ mongoose
 
 app.use(express.json());
 
-// Auth Routes
+
 const authRouter = require("./routes/auth.route");
 app.use("/api/auth", authRouter);
 
-// Product Routes
+
 const productRoutes = require("./routes/product.route");
 app.use("/api/products", productRoutes);
 
-// Order Routes
 const orderRoutes = require("./routes/order.route");
 app.use("/api/orders", orderRoutes);
 
-// Cart Routes
+
 const cartRouter = require("./routes/cart.route");
 app.use("/api/cart", cartRouter);
 
-// Error Middleware
+
 const errMidlleware = require("./middlewares/err.middleware");
 app.use(errMidlleware);
 
