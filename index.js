@@ -10,6 +10,8 @@ mongoose.connect(process.env.mongourl)
 .catch( (err)=>console.log(err) )
 
 
+const authRouter = require("./routes/auth.route")
+app.use('/auth',authRouter)
 
 app.listen(process.env.port,()=>{
     console.log(`Server is running on port ${process.env.port}`)
