@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt")
 
 const UserSchema = mongoose.Schema(
     {
@@ -31,7 +32,10 @@ const UserSchema = mongoose.Schema(
                 "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
             ]
         },
-
+        confirmpassword: {
+            type: String,
+            required: [true, "Please Confirm The Password"]
+        },
         role: {
             type: String,
             enum: ["user", "admin"],
@@ -61,5 +65,16 @@ const UserSchema = mongoose.Schema(
         timestamps: true
     }
 );
+UserSchema.pre("save",async function(next){
+    if (!this.isModified("password"))  return next()
+    if(this.password !== this.confirmpassword){
+        throw Error("password and confrimpassword do not match")
+    }
+    this.password = await bcrypt.hash(this.password,8)
+    this.confirmpassword = undefined
+})
+UserSchema.methods.comparepassword = async function (userPassword){
+    return await bcrypt.compare(userPassword,this.password)
+}
 
 module.exports = mongoose.model("User", UserSchema);
