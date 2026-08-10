@@ -15,6 +15,8 @@ const authRouter = require("./routes/auth.route")
 app.use('/api/auth',authRouter)
 const productRoutes = require("./routes/product.route");
 app.use('/api/products', productRoutes);
+const orderRoutes = require("./routes/order.route");
+app.use('/api/orders', orderRoutes);
 
 const errMidlleware = require("./middlewares/err.middleware")
 app.use(errMidlleware)
