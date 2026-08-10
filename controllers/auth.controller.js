@@ -6,7 +6,7 @@ const register = async(req,res,next)=>{
         const {name,email,password,confirmpassword}=req.body
         const user = new User({name,email,password,confirmpassword})
         await user.save()
-        const token =jwt.sign({id:user._id,name:user.name},
+        const token =jwt.sign({id:user._id,name:user.name, role: user.role},
             process.env.secret_key
         )
         res.status(201).json({msg:"your registration done",newuser:user,token:token})
@@ -21,7 +21,7 @@ const login = async(req,res,next)=>{
         const user = await User.findOne({email:email})
         if(!user) return res.status(400).json("invalid email")
         if(!(await user.comparepassword(password))) return res.status(400).json("wrong password")
-        const token = jwt.sign({id:user._id,name:user.name},process.env.secret_key)
+        const token = jwt.sign({id:user._id,name:user.name, role: user.role},process.env.secret_key)
         res.status(200).json({msg:"login done",user:user,token:token})
     }
     catch(err){

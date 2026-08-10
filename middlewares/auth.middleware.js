@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const key = process.env.secret_key
-exports.verifytoken=(req,res,next)=>{
+const verifytoken=(req,res,next)=>{
     const authHeader = req.headers.authorization
     if(!authHeader) return res.status(401).json("token not found please register or login first")
     try{
@@ -13,3 +13,4 @@ exports.verifytoken=(req,res,next)=>{
         return res.status(403).json({ error: "Invalid or expired token" })
     }
 }
+module.exports = verifytoken

@@ -9,9 +9,15 @@ mongoose.connect(process.env.mongourl)
 .then( ()=>console.log("Connected DB") )
 .catch( (err)=>console.log(err) )
 
+app.use(express.json());
 
 const authRouter = require("./routes/auth.route")
-app.use('/auth',authRouter)
+app.use('/api/auth',authRouter)
+const productRoutes = require("./routes/product.route");
+app.use('/api/products', productRoutes);
+
+const errMidlleware = require("./middlewares/err.middleware")
+app.use(errMidlleware)
 
 app.listen(process.env.port,()=>{
     console.log(`Server is running on port ${process.env.port}`)
