@@ -1,21 +1,14 @@
- const express = require("express");
-const router = express.Router();
-const orderController = require("../controllers/order.controller");
-const { verifyToken} = require("../middlewares/auth.middleware");
-
-router.post("/", verifyToken, orderController.checkout);
-router.get("/", verifyToken, orderController.getallOrders);
-router.get("/:id", verifyToken, orderController.getOrderbyId);
- 
 const express = require("express");
 const router = express.Router();
 
-const {updateOrderStatus} = require("../controllers/order.controller")
-
+const orderController = require("../controllers/order.controller");
+const  verifytoken  = require("../middlewares/auth.middleware");
 const auth = require("../middlewares/auth.middleware");
 const admin = require("../middlewares/admin.middleware");
 
-
-router.patch("/:id", auth, admin, updateOrderStatus);
+router.post("/", verifytoken, orderController.checkout);
+router.get("/", verifytoken, orderController.getallOrders);
+router.get("/:id", verifytoken, orderController.getOrderbyId);
+router.patch("/:id",  verifytoken, admin, orderController.updateOrderStatus);
 
 module.exports = router;

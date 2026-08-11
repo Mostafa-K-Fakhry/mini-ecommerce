@@ -24,12 +24,12 @@ cart.products.forEach(item => {
     const neworder = new Order({
       userId,
       products: orderproducts,
-      totalprice
+      totalPrice: totalprice
     });
     await neworder.save();
     cart.products = [];
     await cart.save();
-    return res.status(201).json({ msg: "Order created successfully"});
+    return res.status(201).json({ msg: "Order created successfully"},neworder);
   } catch (error) {
     next(error);
   }
@@ -51,7 +51,7 @@ cart.products.forEach(item => {
     if (!order) {
       return res.status(404).json({ message: "Order Not Found" });
     }
-    if (order.userId.toString() !== req.user.id ) {
+    if (order.userId.toString() !== req.user.id && req.user.role!=="admin") {
       return res.status(403).json({ message: "Forbidden Access" });
     }
     return res.status(200).json(order);
@@ -59,11 +59,6 @@ cart.products.forEach(item => {
     next(error);
   }
 };
-
-  
-module.exports={checkout, getallOrders,getOrderbyId};
-  
-module.exports={checkout, getallOrders,getOrderbyId};
 
 const updateOrderStatus = async (req, res, next) => {
     const id = req.params.id;
@@ -92,5 +87,11 @@ const updateOrderStatus = async (req, res, next) => {
         next(err);
     }
 };
+  
+ 
+  
+module.exports={checkout, getallOrders,getOrderbyId,updateOrderStatus};
 
-module.exports = { updateOrderStatus };
+
+
+ 
