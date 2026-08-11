@@ -101,8 +101,86 @@ const deleteProduct=async(req,res,next)=>{
     }
 }
 
+const getAllProducts = async (req, res, next) => {
+    try {
+        const products = await Product.find();
+
+        res.status(200).json({
+            success: true,
+            message: "All Products Retrieved Successfully",
+            products
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+const getProductByID = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const product = await Product.findById(id);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Product Retrieved Successfully",
+            product
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+const searchProducts = async (req, res, next) => {
+    try {
+        const { title, category } = req.query;
+
+        const filter = {};
+
+        if (title) {
+            filter.title = {
+                $regex: title,
+                $options: "i"
+            };
+        }
+
+        if (category) {
+            filter.category = {
+                $regex: category,
+                $options: "i"
+            };
+        }
+
+        const products = await Product.find(filter);
+
+        res.status(200).json({
+            success: true,
+            message: "Products found successfully",
+            products
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+
 module.exports = {
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getAllProducts,
+    getProductByID,
+    searchProducts
 };
