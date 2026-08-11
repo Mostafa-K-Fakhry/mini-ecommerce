@@ -1,4 +1,3 @@
-const { useId } = require("react");
 const Cart = require("../models/cart.model");
 const Product = require("../models/product.model");
 
@@ -15,12 +14,12 @@ const addToCart = async (req, res, next) => {
 		}
 
 		let cart = await Cart.findOne({
-			userId: req.user._id,
+			userId: req.user.id,
 		});
 
 		if (!cart) {
 			cart = await Cart.create({
-				userId: req.user._id,
+				userId: req.user.id,
 				products: [
 					{
 						productId,
@@ -61,7 +60,7 @@ const addToCart = async (req, res, next) => {
 
 const getCart = async (req, res, next) => {
 	try {
-		const cart = await Cart.findOne({ userId: req.user._id }).populate(
+		const cart = await Cart.findOne({ userId: req.user.id }).populate(
 			"products.productId",
 		);
 		if (cart) {
@@ -75,7 +74,7 @@ const getCart = async (req, res, next) => {
 
 const updateCartQuantity = async (req, res, next) => {
 	try {
-		const cart = await Cart.findOne({ userId: req.user._id });
+		const cart = await Cart.findOne({ userId: req.user.id });
 
 		if (!cart) {
 			return res
@@ -101,7 +100,7 @@ const updateCartQuantity = async (req, res, next) => {
 
 const removeFromCart = async (req, res, next) => {
 	try {
-		const cart = await Cart.findOne({ userId: req.user._id });
+		const cart = await Cart.findOne({ userId: req.user.id });
 
 		if (!cart) {
 			return res
@@ -130,7 +129,7 @@ const removeFromCart = async (req, res, next) => {
 
 const clearCart = async (req, res, next) => {
 	try {
-		const cart = await Cart.findOne({ userId: req.user._id });
+		const cart = await Cart.findOne({ userId: req.user.id });
 
 		if (!cart) {
 			return res
