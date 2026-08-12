@@ -35,6 +35,36 @@ const orderSchema = new mongoose.Schema({
         min: [0, "Total price cannot be negative"]
     },
 
+    customerInfo: {
+        fullName: {
+            type: String,
+            required: [true, "Full name is required"],
+            trim: true,
+        },
+        phone: {
+            type: String,
+            required: [true, "Phone number is required"],
+            trim: true,
+        },
+        address: {
+            type: String,
+            required: [true, "Address is required"],
+            trim: true,
+        },
+        city: {
+            type: String,
+            required: [true, "City is required"],
+            trim: true,
+        },
+    },
+
+    paymentMethod: {
+        type: String,
+        enum: ["Cash on Delivery"],
+        required: [true, "Payment method is required"],
+        default: "Cash on Delivery",
+    },
+
     status: {
         type: String,
         enum: [

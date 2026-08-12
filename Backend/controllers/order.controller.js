@@ -5,6 +5,27 @@ const Product = require("../models/product.model");
 const checkout = async (req, res, next) => {
 	try {
 		const userId = req.user.id;
+		const { customerInfo, paymentMethod } = req.body;
+
+		if (
+			!customerInfo ||
+			![
+				customerInfo.fullName,
+				customerInfo.phone,
+				customerInfo.address,
+				customerInfo.city,
+			].every((value) => typeof value === "string" && value.trim())
+		) {
+			return res.status(400).json({
+				msg: "Full name, phone number, address, and city are required",
+			});
+		}
+
+		if (paymentMethod !== "Cash on Delivery") {
+			return res.status(400).json({
+				msg: "Cash on Delivery is the only supported payment method",
+			});
+		}
 
 		const cart = await Cart.findOne({ userId }).populate(
 			"products.productId",
@@ -47,6 +68,13 @@ const checkout = async (req, res, next) => {
 			userId,
 			products: orderproducts,
 			totalPrice: totalprice,
+			customerInfo: {
+				fullName: customerInfo.fullName.trim(),
+				phone: customerInfo.phone.trim(),
+				address: customerInfo.address.trim(),
+				city: customerInfo.city.trim(),
+			},
+			paymentMethod,
 		});
 
 		await neworder.save();

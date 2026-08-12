@@ -1,0 +1,30 @@
+    <section class="container py-5">
+      <a routerLink="/orders" class="back-link">← Back to orders</a>
+      @if (error) { <div class="alert alert-danger mt-4">{{ error }}</div> }
+      @if (loading) { <div class="py-5 text-center"><div class="spinner-border text-primary"></div><p class="mt-2 text-secondary">Loading...</p></div> }
+      @if (order && !loading) {
+        <div class="row justify-content-center mt-3"><div class="col-lg-9"><div class="summary-card">
+          <div class="d-flex flex-wrap justify-content-between gap-3 mb-4"><div><p class="eyebrow mb-1">Order details</p><h1 class="h3 mb-0">Order #{{ order._id.slice(-8) }}</h1></div><span class="status-badge align-self-center" [attr.data-status]="order.status">{{ order.status }}</span></div>
+          <div class="row mb-4"><div class="col-sm-6"><span class="text-secondary d-block small">Placed on</span>{{ order.createdAt | date:'medium' }}</div><div class="col-sm-6"><span class="text-secondary d-block small">Order total</span><strong class="price">{{ order.totalPrice | currency:'USD' }}</strong></div></div>
+          <section class="delivery-information border-top pt-4 mb-4">
+            <h2 class="h5 mb-3">Delivery Information</h2>
+            @if (order.customerInfo; as customerInfo) {
+              <div class="row g-3 small"><div class="col-sm-6"><span class="text-secondary d-block">Full Name</span><strong>{{ customerInfo.fullName }}</strong></div><div class="col-sm-6"><span class="text-secondary d-block">Phone</span><strong>{{ customerInfo.phone }}</strong></div><div class="col-sm-6"><span class="text-secondary d-block">Address</span><strong class="delivery-address">{{ customerInfo.address }}</strong></div><div class="col-sm-6"><span class="text-secondary d-block">City</span><strong>{{ customerInfo.city }}</strong></div><div class="col-sm-6"><span class="text-secondary d-block">Payment Method</span><strong>{{ order.paymentMethod || 'Not available' }}</strong></div></div>
+            } @else {
+              <p class="text-secondary small mb-0">Delivery information is unavailable for this older order.</p>
+            }
+          </section>
+          <h2 class="h5 border-top pt-4">Items</h2>
+          <div class="order-item-card" *ngFor="let item of order.products">
+            @if (productFor(item); as product) {
+              <img class="order-product-image" [src]="product.image" [alt]="product.title">
+              <div class="order-product-info"><span class="product-category">{{ product.category }}</span><h3 class="h6 mb-2">{{ product.title }}</h3><p class="text-secondary small mb-0">{{ product.description }}</p></div>
+            } @else {
+              <div class="order-product-image-placeholder">Product unavailable</div>
+              <div class="order-product-info"><h3 class="h6 mb-1">Product no longer available</h3><small class="font-monospace text-secondary">Reference: {{ item.productId }}</small></div>
+            }
+            <div class="order-item-pricing"><span>Quantity: {{ item.quantity }}</span><span>Price: {{ item.price | currency:'USD' }}</span><strong>Subtotal: {{ item.quantity * item.price | currency:'USD' }}</strong></div>
+          </div>
+        </div></div></div>
+      }
+    </section>

@@ -1,0 +1,8 @@
+    <section class="container py-5">
+      @if (error) { <div class="alert alert-danger">{{ error }}</div> }
+      @if (loading) { <div class="py-5 text-center"><div class="spinner-border text-primary"></div><p class="mt-2 text-secondary">Loading...</p></div> }
+      @if (product && !loading) { <div class="row g-5"><div class="col-lg-6"><img class="detail-image" [src]="product.image" [alt]="product.title"></div><div class="col-lg-6"><a routerLink="/products" class="back-link">← Back to products</a><p class="eyebrow mt-4">{{ product.category }}</p><h1>{{ product.title }}</h1><p class="detail-price">{{ product.price | currency:'USD' }}</p><p class="lead text-secondary">{{ product.description }}</p><p class="mb-4"><span class="fw-semibold">Availability:</span> <span [class.text-danger]="product.stock === 0" [class.text-success]="product.stock > 0">{{ product.stock > 0 ? product.stock + ' in stock' : 'Out of stock' }}</span></p>
+        @if (message) { <div class="alert alert-success">{{ message }}</div> }
+        <div class="d-flex flex-wrap gap-3 align-items-center"><div class="input-group quantity-input"><button class="btn btn-outline-secondary" type="button" (click)="quantity = quantity > 1 ? quantity - 1 : 1">−</button><input type="number" min="1" [max]="product.stock" class="form-control text-center" [(ngModel)]="quantity"><button class="btn btn-outline-secondary" type="button" (click)="quantity = quantity < product.stock ? quantity + 1 : product.stock">+</button></div><button class="btn btn-primary px-4" [disabled]="product.stock === 0 || adding" (click)="addToCart()">{{ adding ? 'Adding...' : 'Add to Cart' }}</button></div>
+      </div></div> }
+    </section>
