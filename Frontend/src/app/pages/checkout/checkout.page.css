@@ -1,0 +1,12 @@
+.payment-method {
+  padding: .85rem 1rem .85rem 2.25rem;
+  border: 1px solid var(--line);
+  background: #f5f8f5;
+}
+
+.payment-method .form-check-input { opacity: 1; }
+.payment-method .form-check-label { color: var(--ink); font-weight: 600; }
+
+@media (min-width: 992px) {
+  .checkout-summary { position: sticky; top: 82px; }
+}

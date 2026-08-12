@@ -1,2 +1,28 @@
+<<<<<<< HEAD
 node_modules/
 config.env
+=======
+# Dependencies
+node_modules/
+config.env
+
+
+# Dependencies
+**/node_modules/
+
+# Angular build
+Frontend/dist/
+Frontend/.angular/
+
+# Backend environment
+Backend/config.env
+
+# Environment files
+*.env
+*.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+>>>>>>> origin/integration/mostafa

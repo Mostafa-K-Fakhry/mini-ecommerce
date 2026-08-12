@@ -1,0 +1,22 @@
+.app-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.app-footer strong {
+  color: var(--ink);
+}
+
+.app-footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  color: var(--accent);
+}
+
+.footer-copyright {
+  color: var(--muted);
+}

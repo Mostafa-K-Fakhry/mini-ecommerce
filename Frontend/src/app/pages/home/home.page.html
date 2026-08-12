@@ -1,0 +1,37 @@
+    <section class="hero-section">
+      <div class="container py-5">
+        <div class="row align-items-center g-4 py-lg-4">
+          <div class="col-lg-7">
+            <p class="eyebrow">Everyday essentials, thoughtfully selected</p>
+            <h1>Everything you need, in one place.</h1>
+            <p class="lead text-secondary mt-3 mb-4">Discover useful products at clear prices, with a quick and simple checkout.</p>
+            <a class="btn btn-primary btn-lg px-4" routerLink="/products">Browse Products</a>
+          </div>
+          <div class="col-lg-5">
+            <div class="hero-note">
+              <span class="hero-note-number">01</span>
+              <p class="mb-0">A small store built around straightforward browsing, reliable stock information, and an easy order flow.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container py-5">
+      <div class="d-flex justify-content-between align-items-end gap-3 mb-4">
+        <div>
+          <p class="eyebrow mb-1">Featured products</p>
+          <h2 class="mb-0">Start exploring</h2>
+        </div>
+        <a routerLink="/products" class="link-primary fw-semibold">View all products</a>
+      </div>
+      @if (loading) {
+        <div class="py-5 text-center"><div class="spinner-border text-primary" aria-label="Loading"></div><p class="mt-2 text-secondary">Loading...</p></div>
+      } @else if (products.length) {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          @for (product of products.slice(0, 3); track product._id) { <div class="col"><app-product-card [product]="product" /></div> }
+        </div>
+      } @else {
+        <div class="empty-state">No products are available yet.</div>
+      }
+    </section>
