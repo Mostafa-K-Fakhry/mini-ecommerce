@@ -1,6 +1,77 @@
-    <section class="container py-5"><div class="page-heading"><p class="eyebrow">Your selection</p><h1>Shopping Cart</h1></div>
-      @if (error) { <div class="alert alert-danger">{{ error }}</div> } @if (message) { <div class="alert alert-success">{{ message }}</div> }
-      @if (loading) { <div class="py-5 text-center"><div class="spinner-border text-primary"></div><p class="mt-2 text-secondary">Loading...</p></div> }
-      @else if (!cart?.products?.length) { <div class="empty-state"><h2 class="h4">Your cart is empty.</h2><p class="text-secondary">Add something you like, then come back here to check out.</p><a class="btn btn-primary" routerLink="/products">Continue Shopping</a></div> }
-      @else { <div class="row g-4"><div class="col-lg-8"><div class="card"><div class="card-body p-0"><div class="cart-line" *ngFor="let line of cart!.products"><ng-container *ngIf="productOf(line) as product; else unpopulated"><img [src]="product.image" [alt]="product.title" class="cart-image"><div class="flex-grow-1"><h2 class="h6 mb-1">{{ product.title }}</h2><p class="text-secondary small mb-2">{{ product.price | currency:'USD' }} each</p><div class="d-flex flex-wrap justify-content-between gap-3 align-items-center"><div class="quantity-controls"><button class="btn btn-sm btn-outline-secondary" (click)="changeQuantity(line, line.quantity - 1)">−</button><span>{{ line.quantity }}</span><button class="btn btn-sm btn-outline-secondary" [disabled]="line.quantity >= product.stock" (click)="changeQuantity(line, line.quantity + 1)">+</button></div><button class="btn btn-link btn-sm text-danger p-0" (click)="remove(line)">Remove</button></div></div><strong>{{ line.quantity * product.price | currency:'USD' }}</strong></ng-container><ng-template #unpopulated><div class="text-secondary">Product information is unavailable.</div></ng-template></div></div></div></div><div class="col-lg-4"><aside class="summary-card"><h2 class="h5">Order summary</h2><div class="d-flex justify-content-between mb-3"><span class="text-secondary">Total</span><strong class="price">{{ total() | currency:'USD' }}</strong></div><a class="btn btn-primary w-100" routerLink="/checkout">Checkout</a></aside></div></div> }
-    </section>
+<section class="container py-5">
+  <div class="page-heading">
+    <p class="eyebrow">Your selection</p>
+    <h1>Shopping Cart</h1>
+  </div>
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
+  @if (message) {
+    <div class="alert alert-success">{{ message }}</div>
+  }
+  @if (loading) {
+    <div class="py-5 text-center">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-2 text-secondary">Loading...</p>
+    </div>
+  } @else if (!cart?.products?.length) {
+    <div class="empty-state">
+      <h2 class="h4">Your cart is empty.</h2>
+      <p class="text-secondary">Add something you like, then come back here to check out.</p>
+      <a class="btn btn-primary" routerLink="/products">Continue Shopping</a>
+    </div>
+  } @else {
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body p-0">
+            <div class="cart-line" *ngFor="let line of cart!.products">
+              <ng-container *ngIf="productOf(line) as product; else unpopulated"
+                ><img [src]="product.image" [alt]="product.title" class="cart-image" />
+                <div class="flex-grow-1">
+                  <h2 class="h6 mb-1">{{ product.title }}</h2>
+                  <p class="text-secondary small mb-2">
+                    {{ product.price | currency: 'USD' }} each
+                  </p>
+                  <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center">
+                    <div class="quantity-controls">
+                      <button
+                        class="btn btn-sm btn-outline-secondary"
+                        (click)="changeQuantity(line, line.quantity - 1)"
+                      >
+                        −</button
+                      ><span>{{ line.quantity }}</span
+                      ><button
+                        class="btn btn-sm btn-outline-secondary"
+                        [disabled]="line.quantity >= product.stock"
+                        (click)="changeQuantity(line, line.quantity + 1)"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button class="btn btn-link btn-sm text-danger p-0" (click)="remove(line)">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                <strong>{{ line.quantity * product.price | currency: 'USD' }}</strong></ng-container
+              ><ng-template #unpopulated
+                ><div class="text-secondary">Product information is unavailable.</div></ng-template
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <aside class="summary-card">
+          <h2 class="h5">Order summary</h2>
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-secondary">Total</span
+            ><strong class="price">{{ total() | currency: 'USD' }}</strong>
+          </div>
+          <a class="btn btn-primary w-100" routerLink="/checkout">Checkout</a>
+        </aside>
+      </div>
+    </div>
+  }
+</section>

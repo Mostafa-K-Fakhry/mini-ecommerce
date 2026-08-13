@@ -14,25 +14,31 @@ export class CartService {
 
   getCart(): Observable<Cart | null> {
     return this.http.get<{ cart: Cart }>(this.url).pipe(
-      catchError((error: HttpErrorResponse) => error.status === 404 ? of({ cart: null }) : (() => { throw error; })()),
+      catchError((error: HttpErrorResponse) =>
+        error.status === 404
+          ? of({ cart: null })
+          : (() => {
+              throw error;
+            })(),
+      ),
       map(({ cart }) => cart),
       tap((cart) => this.setItemCount(cart)),
     );
   }
   add(productId: string, quantity: number): Observable<{ message: string; cart: Cart }> {
-    return this.http.post<{ message: string; cart: Cart }>(this.url, { productId, quantity }).pipe(
-      tap(({ cart }) => this.setItemCount(cart)),
-    );
+    return this.http
+      .post<{ message: string; cart: Cart }>(this.url, { productId, quantity })
+      .pipe(tap(({ cart }) => this.setItemCount(cart)));
   }
   updateQuantity(productId: string, quantity: number): Observable<{ message: string }> {
-    return this.http.patch<{ message: string }>(`${this.url}/${productId}`, { quantity }).pipe(
-      tap(() => this.refreshItemCount()),
-    );
+    return this.http
+      .patch<{ message: string }>(`${this.url}/${productId}`, { quantity })
+      .pipe(tap(() => this.refreshItemCount()));
   }
   remove(productId: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.url}/${productId}`).pipe(
-      tap(() => this.refreshItemCount()),
-    );
+    return this.http
+      .delete<{ message: string }>(`${this.url}/${productId}`)
+      .pipe(tap(() => this.refreshItemCount()));
   }
 
   refreshItemCount(): void {

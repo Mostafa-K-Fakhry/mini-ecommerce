@@ -11,9 +11,43 @@ import { ProductService } from '../../services/product.service';
   styleUrl: './admin-products.page.css',
 })
 export class AdminProductsPage implements OnInit {
-  products: Product[] = []; loading = true; error = ''; message = ''; deleteTarget: Product | null = null; deleting = false;
+  products: Product[] = [];
+  loading = true;
+  error = '';
+  message = '';
+  deleteTarget: Product | null = null;
+  deleting = false;
   constructor(private readonly productsApi: ProductService) {}
-  ngOnInit(): void { this.load(); }
-  confirmDelete(): void { if (!this.deleteTarget) return; this.deleting = true; this.productsApi.delete(this.deleteTarget._id).subscribe({ next: ({ message }) => { this.message = message || 'Product deleted successfully.'; this.deleteTarget = null; this.deleting = false; this.load(); }, error: (error) => { this.error = apiErrorMessage(error); this.deleting = false; } }); }
-  private load(): void { this.loading = true; this.productsApi.list().subscribe({ next: ({ products }) => { this.products = products; this.loading = false; }, error: (error) => { this.error = apiErrorMessage(error); this.loading = false; } }); }
+  ngOnInit(): void {
+    this.load();
+  }
+  confirmDelete(): void {
+    if (!this.deleteTarget) return;
+    this.deleting = true;
+    this.productsApi.delete(this.deleteTarget._id).subscribe({
+      next: ({ message }) => {
+        this.message = message || 'Product deleted successfully.';
+        this.deleteTarget = null;
+        this.deleting = false;
+        this.load();
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.deleting = false;
+      },
+    });
+  }
+  private load(): void {
+    this.loading = true;
+    this.productsApi.list().subscribe({
+      next: ({ products }) => {
+        this.products = products;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.loading = false;
+      },
+    });
+  }
 }

@@ -29,10 +29,34 @@ export class CheckoutPage implements OnInit {
     city: ['', Validators.required],
   });
 
-  constructor(private readonly cartApi: CartService, private readonly ordersApi: OrderService, private readonly router: Router) {}
-  ngOnInit(): void { this.cartApi.getCart().subscribe({ next: (cart) => { this.cart = cart; this.loading = false; }, error: (error) => { this.error = apiErrorMessage(error); this.loading = false; } }); }
-  productOf(line: CartLine): Product | null { return typeof line.productId === 'string' ? null : line.productId; }
-  total(): number { return this.cart?.products.reduce((sum, line) => sum + (this.productOf(line)?.price ?? 0) * line.quantity, 0) ?? 0; }
+  constructor(
+    private readonly cartApi: CartService,
+    private readonly ordersApi: OrderService,
+    private readonly router: Router,
+  ) {}
+  ngOnInit(): void {
+    this.cartApi.getCart().subscribe({
+      next: (cart) => {
+        this.cart = cart;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.loading = false;
+      },
+    });
+  }
+  productOf(line: CartLine): Product | null {
+    return typeof line.productId === 'string' ? null : line.productId;
+  }
+  total(): number {
+    return (
+      this.cart?.products.reduce(
+        (sum, line) => sum + (this.productOf(line)?.price ?? 0) * line.quantity,
+        0,
+      ) ?? 0
+    );
+  }
   placeOrder(): void {
     this.submitted = true;
     if (this.deliveryForm.invalid) {
@@ -50,9 +74,14 @@ export class CheckoutPage implements OnInit {
     this.ordersApi.checkout(payload).subscribe({
       next: ({ msg }) => {
         this.cartApi.clearItemCount();
-        this.router.navigate(['/orders'], { state: { orderMessage: msg || 'Order placed successfully.' } });
+        this.router.navigate(['/orders'], {
+          state: { orderMessage: msg || 'Order placed successfully.' },
+        });
       },
-      error: (error) => { this.error = apiErrorMessage(error); this.placing = false; },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.placing = false;
+      },
     });
   }
 }

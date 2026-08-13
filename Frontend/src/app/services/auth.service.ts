@@ -15,12 +15,21 @@ export class AuthService {
 
   constructor(private readonly http: HttpClient) {}
 
-  register(payload: { name: string; email: string; password: string; confirmpassword: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${API_BASE_URL}/auth/register`, payload).pipe(tap((response) => this.persist(response)));
+  register(payload: {
+    name: string;
+    email: string;
+    password: string;
+    confirmpassword: string;
+  }): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${API_BASE_URL}/auth/register`, payload)
+      .pipe(tap((response) => this.persist(response)));
   }
 
   login(payload: { email: string; password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${API_BASE_URL}/auth/login`, payload).pipe(tap((response) => this.persist(response)));
+    return this.http
+      .post<AuthResponse>(`${API_BASE_URL}/auth/login`, payload)
+      .pipe(tap((response) => this.persist(response)));
   }
 
   logout(): void {
@@ -57,7 +66,13 @@ export class AuthService {
       if (saved) return JSON.parse(saved) as User;
       const token = localStorage.getItem(TOKEN_KEY);
       const decoded = token ? this.decodeToken(token) : null;
-      return decoded ? { _id: decoded.id, name: decoded.name ?? 'Account', role: decoded.role === 'admin' ? 'admin' : 'user' } : null;
+      return decoded
+        ? {
+            _id: decoded.id,
+            name: decoded.name ?? 'Account',
+            role: decoded.role === 'admin' ? 'admin' : 'user',
+          }
+        : null;
     } catch {
       return null;
     }

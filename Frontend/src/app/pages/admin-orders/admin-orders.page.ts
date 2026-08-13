@@ -12,8 +12,40 @@ import { OrderService } from '../../services/order.service';
   styleUrl: './admin-orders.page.css',
 })
 export class AdminOrdersPage implements OnInit {
-  orders: Order[] = []; readonly statuses = ORDER_STATUSES; loading = true; error = ''; message = ''; updatingId = '';
+  orders: Order[] = [];
+  readonly statuses = ORDER_STATUSES;
+  loading = true;
+  error = '';
+  message = '';
+  updatingId = '';
   constructor(private readonly ordersApi: OrderService) {}
-  ngOnInit(): void { this.ordersApi.list().subscribe({ next: (orders) => { this.orders = orders; this.loading = false; }, error: (error) => { this.error = apiErrorMessage(error); this.loading = false; } }); }
-  updateStatus(order: Order, value: string): void { if (!ORDER_STATUSES.includes(value as OrderStatus) || order.status === value) return; this.updatingId = order._id; this.error = ''; this.ordersApi.updateStatus(order._id, value as OrderStatus).subscribe({ next: ({ order: updated, message }) => { const index = this.orders.findIndex((item) => item._id === updated._id); if (index >= 0) this.orders[index] = updated; this.message = message; this.updatingId = ''; }, error: (error) => { this.error = apiErrorMessage(error); this.updatingId = ''; } }); }
+  ngOnInit(): void {
+    this.ordersApi.list().subscribe({
+      next: (orders) => {
+        this.orders = orders;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.loading = false;
+      },
+    });
+  }
+  updateStatus(order: Order, value: string): void {
+    if (!ORDER_STATUSES.includes(value as OrderStatus) || order.status === value) return;
+    this.updatingId = order._id;
+    this.error = '';
+    this.ordersApi.updateStatus(order._id, value as OrderStatus).subscribe({
+      next: ({ order: updated, message }) => {
+        const index = this.orders.findIndex((item) => item._id === updated._id);
+        if (index >= 0) this.orders[index] = updated;
+        this.message = message;
+        this.updatingId = '';
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.updatingId = '';
+      },
+    });
+  }
 }

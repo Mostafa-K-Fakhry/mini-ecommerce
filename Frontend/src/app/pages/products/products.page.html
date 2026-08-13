@@ -1,8 +1,43 @@
-    <section class="container py-5">
-      <div class="page-heading"><p class="eyebrow">The collection</p><h1>Products</h1><p class="text-secondary mb-0">Find the items that fit your day.</p></div>
-      <form class="row g-2 my-4" [formGroup]="searchForm" (ngSubmit)="search()"><div class="col-sm-8 col-md-6"><label class="visually-hidden" for="search">Search products</label><input id="search" class="form-control" placeholder="Search products..." formControlName="title"></div><div class="col-auto"><button class="btn btn-primary">Search</button></div>@if (searching) { <div class="col-auto"><button type="button" class="btn btn-outline-secondary" (click)="clearSearch()">Clear</button></div> }</form>
-      @if (error) { <div class="alert alert-danger">{{ error }}</div> }
-      @if (loading) { <div class="py-5 text-center"><div class="spinner-border text-primary"></div><p class="text-secondary mt-2">Loading...</p></div> }
-      @else if (products.length) { <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">@for (product of products; track product._id) { <div class="col"><app-product-card [product]="product" /></div> }</div> }
-      @else { <div class="empty-state">No products found.</div> }
-    </section>
+<section class="container py-5">
+  <div class="page-heading">
+    <p class="eyebrow">The collection</p>
+    <h1>Products</h1>
+    <p class="text-secondary mb-0">Find the items that fit your day.</p>
+  </div>
+  <form class="row g-2 my-4" [formGroup]="searchForm" (ngSubmit)="search()">
+    <div class="col-sm-8 col-md-6">
+      <label class="visually-hidden" for="search">Search products</label
+      ><input
+        id="search"
+        class="form-control"
+        placeholder="Search products..."
+        formControlName="title"
+      />
+    </div>
+    <div class="col-auto"><button class="btn btn-primary">Search</button></div>
+    @if (searching) {
+      <div class="col-auto">
+        <button type="button" class="btn btn-outline-secondary" (click)="clearSearch()">
+          Clear
+        </button>
+      </div>
+    }
+  </form>
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
+  @if (loading) {
+    <div class="py-5 text-center">
+      <div class="spinner-border text-primary"></div>
+      <p class="text-secondary mt-2">Loading...</p>
+    </div>
+  } @else if (products.length) {
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+      @for (product of products; track product._id) {
+        <div class="col"><app-product-card [product]="product" /></div>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">No products found.</div>
+  }
+</section>

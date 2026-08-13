@@ -10,12 +10,18 @@ export class ProductService {
 
   constructor(private readonly http: HttpClient) {}
 
-  list(): Observable<ProductsResponse> { return this.http.get<ProductsResponse>(this.url); }
+  list(): Observable<ProductsResponse> {
+    return this.http.get<ProductsResponse>(this.url);
+  }
   search(title: string): Observable<ProductsResponse> {
-    return this.http.get<ProductsResponse>(`${this.url}/search`, { params: new HttpParams().set('title', title) });
+    return this.http.get<ProductsResponse>(`${this.url}/search`, {
+      params: new HttpParams().set('title', title),
+    });
   }
   get(id: string): Observable<{ success: boolean; message: string; product: Product }> {
-    return this.http.get<{ success: boolean; message: string; product: Product }>(`${this.url}/${id}`);
+    return this.http.get<{ success: boolean; message: string; product: Product }>(
+      `${this.url}/${id}`,
+    );
   }
   create(payload: ProductPayload): Observable<{ product: Product; message: string }> {
     return this.http.post<{ product: Product; message: string }>(this.url, payload);
@@ -23,5 +29,7 @@ export class ProductService {
   update(id: string, payload: ProductPayload): Observable<{ product: Product; message: string }> {
     return this.http.patch<{ product: Product; message: string }>(`${this.url}/${id}`, payload);
   }
-  delete(id: string): Observable<{ message: string }> { return this.http.delete<{ message: string }>(`${this.url}/${id}`); }
+  delete(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.url}/${id}`);
+  }
 }

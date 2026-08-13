@@ -1,28 +1,148 @@
-    <section class="container py-5"><div class="page-heading"><p class="eyebrow">Final step</p><h1>Checkout</h1><p class="text-secondary">Enter your delivery details, then review your order before placing it.</p></div>
-      @if (error) { <div class="alert alert-danger">{{ error }}</div> }
-      @if (loading) { <div class="py-5 text-center"><div class="spinner-border text-primary"></div><p class="mt-2 text-secondary">Loading...</p></div> }
-      @else if (!cart?.products?.length) { <div class="empty-state"><h2 class="h4">Your cart is empty.</h2><a class="btn btn-primary" routerLink="/products">Browse Products</a></div> }
-      @else {
-        <div class="row g-4 checkout-layout">
-          <div class="col-lg-7">
-            <form class="form-card" [formGroup]="deliveryForm" (ngSubmit)="placeOrder()" novalidate>
-              <h2 class="h4 mb-4">Delivery Information</h2>
-              <div class="mb-3"><label class="form-label" for="fullName">Full Name</label><input id="fullName" type="text" class="form-control" formControlName="fullName" autocomplete="name"><div class="invalid-feedback d-block" *ngIf="deliveryForm.controls.fullName.invalid && (deliveryForm.controls.fullName.touched || submitted)">Name is required.</div></div>
-              <div class="mb-3"><label class="form-label" for="phone">Phone Number</label><input id="phone" type="tel" class="form-control" formControlName="phone" autocomplete="tel"><div class="invalid-feedback d-block" *ngIf="deliveryForm.controls.phone.hasError('required') && (deliveryForm.controls.phone.touched || submitted)">Phone number is required.</div><div class="invalid-feedback d-block" *ngIf="deliveryForm.controls.phone.hasError('pattern') && (deliveryForm.controls.phone.touched || submitted)">Please enter a valid phone number.</div></div>
-              <div class="mb-3"><label class="form-label" for="address">Address</label><textarea id="address" rows="3" class="form-control" formControlName="address" autocomplete="street-address"></textarea><div class="invalid-feedback d-block" *ngIf="deliveryForm.controls.address.invalid && (deliveryForm.controls.address.touched || submitted)">Address is required.</div></div>
-              <div class="mb-0"><label class="form-label" for="city">City</label><input id="city" type="text" class="form-control" formControlName="city" autocomplete="address-level2"><div class="invalid-feedback d-block" *ngIf="deliveryForm.controls.city.invalid && (deliveryForm.controls.city.touched || submitted)">City is required.</div></div>
-            </form>
-          </div>
-          <div class="col-lg-5">
-            <div class="summary-card checkout-summary">
-              <h2 class="h4 mb-4">Payment Method</h2>
-              <div class="form-check payment-method mb-4"><input class="form-check-input" type="radio" id="cashOnDelivery" checked disabled><label class="form-check-label" for="cashOnDelivery">{{ paymentMethod }}</label></div>
-              <h2 class="h4 border-top pt-4 mb-3">Order Summary</h2>
-              <div class="checkout-line" *ngFor="let line of cart!.products"><span>{{ productOf(line)?.title || 'Product' }} × {{ line.quantity }}</span><strong>{{ (productOf(line)?.price || 0) * line.quantity | currency:'USD' }}</strong></div>
-              <hr><div class="d-flex justify-content-between mb-4"><span class="h5">Total</span><strong class="price">{{ total() | currency:'USD' }}</strong></div>
-              <button class="btn btn-primary w-100" type="button" [disabled]="placing" (click)="placeOrder()">{{ placing ? 'Placing order...' : 'Place Order' }}</button><a class="btn btn-link w-100 mt-2" routerLink="/cart">Back to cart</a>
+<section class="container py-5">
+  <div class="page-heading">
+    <p class="eyebrow">Final step</p>
+    <h1>Checkout</h1>
+    <p class="text-secondary">
+      Enter your delivery details, then review your order before placing it.
+    </p>
+  </div>
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
+  @if (loading) {
+    <div class="py-5 text-center">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-2 text-secondary">Loading...</p>
+    </div>
+  } @else if (!cart?.products?.length) {
+    <div class="empty-state">
+      <h2 class="h4">Your cart is empty.</h2>
+      <a class="btn btn-primary" routerLink="/products">Browse Products</a>
+    </div>
+  } @else {
+    <div class="row g-4 checkout-layout">
+      <div class="col-lg-7">
+        <form class="form-card" [formGroup]="deliveryForm" (ngSubmit)="placeOrder()" novalidate>
+          <h2 class="h4 mb-4">Delivery Information</h2>
+          <div class="mb-3">
+            <label class="form-label" for="fullName">Full Name</label
+            ><input
+              id="fullName"
+              type="text"
+              class="form-control"
+              formControlName="fullName"
+              autocomplete="name"
+            />
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="
+                deliveryForm.controls.fullName.invalid &&
+                (deliveryForm.controls.fullName.touched || submitted)
+              "
+            >
+              Name is required.
             </div>
           </div>
+          <div class="mb-3">
+            <label class="form-label" for="phone">Phone Number</label
+            ><input
+              id="phone"
+              type="tel"
+              class="form-control"
+              formControlName="phone"
+              autocomplete="tel"
+            />
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="
+                deliveryForm.controls.phone.hasError('required') &&
+                (deliveryForm.controls.phone.touched || submitted)
+              "
+            >
+              Phone number is required.
+            </div>
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="
+                deliveryForm.controls.phone.hasError('pattern') &&
+                (deliveryForm.controls.phone.touched || submitted)
+              "
+            >
+              Please enter a valid phone number.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="address">Address</label
+            ><textarea
+              id="address"
+              rows="3"
+              class="form-control"
+              formControlName="address"
+              autocomplete="street-address"
+            ></textarea>
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="
+                deliveryForm.controls.address.invalid &&
+                (deliveryForm.controls.address.touched || submitted)
+              "
+            >
+              Address is required.
+            </div>
+          </div>
+          <div class="mb-0">
+            <label class="form-label" for="city">City</label
+            ><input
+              id="city"
+              type="text"
+              class="form-control"
+              formControlName="city"
+              autocomplete="address-level2"
+            />
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="
+                deliveryForm.controls.city.invalid &&
+                (deliveryForm.controls.city.touched || submitted)
+              "
+            >
+              City is required.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-5">
+        <div class="summary-card checkout-summary">
+          <h2 class="h4 mb-4">Payment Method</h2>
+          <div class="form-check payment-method mb-4">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="cashOnDelivery"
+              checked
+              disabled
+            /><label class="form-check-label" for="cashOnDelivery">{{ paymentMethod }}</label>
+          </div>
+          <h2 class="h4 border-top pt-4 mb-3">Order Summary</h2>
+          <div class="checkout-line" *ngFor="let line of cart!.products">
+            <span>{{ productOf(line)?.title || 'Product' }} × {{ line.quantity }}</span
+            ><strong>{{ (productOf(line)?.price || 0) * line.quantity | currency: 'USD' }}</strong>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mb-4">
+            <span class="h5">Total</span
+            ><strong class="price">{{ total() | currency: 'USD' }}</strong>
+          </div>
+          <button
+            class="btn btn-primary w-100"
+            type="button"
+            [disabled]="placing"
+            (click)="placeOrder()"
+          >
+            {{ placing ? 'Placing order...' : 'Place Order' }}</button
+          ><a class="btn btn-link w-100 mt-2" routerLink="/cart">Back to cart</a>
         </div>
-      }
-    </section>
+      </div>
+    </div>
+  }
+</section>
