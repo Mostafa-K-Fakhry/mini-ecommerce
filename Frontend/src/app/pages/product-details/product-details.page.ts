@@ -14,13 +14,55 @@ import { ProductService } from '../../services/product.service';
   styleUrl: './product-details.page.css',
 })
 export class ProductDetailsPage implements OnInit {
-  product: Product | null = null; loading = true; error = ''; message = ''; quantity = 1; adding = false;
-  constructor(private readonly route: ActivatedRoute, private readonly productsApi: ProductService, private readonly cartApi: CartService, private readonly auth: AuthService, private readonly router: Router) {}
-  ngOnInit(): void { const id = this.route.snapshot.paramMap.get('id'); if (!id) { this.error = 'Product not found.'; this.loading = false; return; } this.productsApi.get(id).subscribe({ next: ({ product }) => { this.product = product; this.loading = false; }, error: (error) => { this.error = apiErrorMessage(error); this.loading = false; } }); }
+  product: Product | null = null;
+  loading = true;
+  error = '';
+  message = '';
+  quantity = 1;
+  adding = false;
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly productsApi: ProductService,
+    private readonly cartApi: CartService,
+    private readonly auth: AuthService,
+    private readonly router: Router,
+  ) {}
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.error = 'Product not found.';
+      this.loading = false;
+      return;
+    }
+    this.productsApi.get(id).subscribe({
+      next: ({ product }) => {
+        this.product = product;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.loading = false;
+      },
+    });
+  }
   addToCart(): void {
     if (!this.product) return;
-    if (!this.auth.isAuthenticated()) { this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } }); return; }
-    this.adding = true; this.error = ''; this.message = '';
-    this.cartApi.add(this.product._id, Math.max(1, Number(this.quantity))).subscribe({ next: ({ message }) => { this.message = message || 'Product added to cart.'; this.adding = false; }, error: (error) => { this.error = apiErrorMessage(error); this.adding = false; } });
+    if (!this.auth.isAuthenticated()) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+    this.adding = true;
+    this.error = '';
+    this.message = '';
+    this.cartApi.add(this.product._id, Math.max(1, Number(this.quantity))).subscribe({
+      next: ({ message }) => {
+        this.message = message || 'Product added to cart.';
+        this.adding = false;
+      },
+      error: (error) => {
+        this.error = apiErrorMessage(error);
+        this.adding = false;
+      },
+    });
   }
 }

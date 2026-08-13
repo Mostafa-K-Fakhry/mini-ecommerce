@@ -14,6 +14,12 @@ export class HomePage implements OnInit {
   loading = true;
   constructor(private readonly productsApi: ProductService) {}
   ngOnInit(): void {
-    this.productsApi.list().subscribe({ next: ({ products }) => { this.products = products; this.loading = false; }, error: () => this.loading = false });
+    this.productsApi.list().subscribe({
+      next: ({ products }) => {
+        this.products = products;
+        this.loading = false;
+      },
+      error: () => (this.loading = false),
+    });
   }
 }

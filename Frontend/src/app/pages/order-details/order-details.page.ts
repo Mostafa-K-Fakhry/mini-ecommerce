@@ -54,10 +54,14 @@ export class OrderDetailsPage implements OnInit {
     const productIds = [...new Set(items.map((item) => item.productId))];
     if (!productIds.length) return;
 
-    forkJoin(productIds.map((productId) => this.productsApi.get(productId).pipe(
-      map(({ product }) => product),
-      catchError(() => of(null)),
-    ))).subscribe((products) => {
+    forkJoin(
+      productIds.map((productId) =>
+        this.productsApi.get(productId).pipe(
+          map(({ product }) => product),
+          catchError(() => of(null)),
+        ),
+      ),
+    ).subscribe((products) => {
       products.forEach((product) => {
         if (product) this.productsById.set(product._id, product);
       });

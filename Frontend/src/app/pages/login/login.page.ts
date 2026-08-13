@@ -11,17 +11,33 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.page.css',
 })
 export class LoginPage {
-  submitted = false; loading = false; error = '';
+  submitted = false;
+  loading = false;
+  error = '';
   private readonly fb = inject(NonNullableFormBuilder);
-  readonly form = this.fb.group({ email: ['', [Validators.required, Validators.email]], password: ['', Validators.required] });
-  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly route: ActivatedRoute) {}
+  readonly form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
+  constructor(
+    private readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+  ) {}
   submit(): void {
-    this.submitted = true; this.error = '';
+    this.submitted = true;
+    this.error = '';
     if (this.form.invalid) return;
     this.loading = true;
     this.auth.login(this.form.getRawValue()).subscribe({
-      next: () => this.router.navigateByUrl(this.route.snapshot.queryParamMap.get('returnUrl') || '/products'),
-      error: (error) => { this.error = apiErrorMessage(error, 'Unable to log in. Please check your credentials.'); this.loading = false; },
+      next: () =>
+        this.router.navigateByUrl(
+          this.route.snapshot.queryParamMap.get('returnUrl') || '/products',
+        ),
+      error: (error) => {
+        this.error = apiErrorMessage(error, 'Unable to log in. Please check your credentials.');
+        this.loading = false;
+      },
     });
   }
 }

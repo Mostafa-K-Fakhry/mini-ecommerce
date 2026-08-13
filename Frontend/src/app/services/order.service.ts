@@ -11,8 +11,12 @@ export class OrderService {
   checkout(payload: CheckoutPayload): Observable<{ msg: string; order: Order }> {
     return this.http.post<{ msg: string; order: Order }>(this.url, payload);
   }
-  list(): Observable<Order[]> { return this.http.get<Order[]>(this.url); }
-  get(id: string): Observable<Order> { return this.http.get<Order>(`${this.url}/${id}`); }
+  list(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.url);
+  }
+  get(id: string): Observable<Order> {
+    return this.http.get<Order>(`${this.url}/${id}`);
+  }
   updateStatus(id: string, status: OrderStatus): Observable<{ message: string; order: Order }> {
     return this.http.patch<{ message: string; order: Order }>(`${this.url}/${id}`, { status });
   }

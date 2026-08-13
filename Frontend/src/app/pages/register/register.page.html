@@ -1,13 +1,70 @@
-    <section class="auth-page container py-5"><div class="row justify-content-center"><div class="col-md-8 col-lg-5">
-      <div class="auth-card"><p class="eyebrow">Create your account</p><h1 class="h2 mb-4">Register</h1>
-        @if (error) { <div class="alert alert-danger">{{ error }}</div> }
+<section class="auth-page container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-5">
+      <div class="auth-card">
+        <p class="eyebrow">Create your account</p>
+        <h1 class="h2 mb-4">Register</h1>
+        @if (error) {
+          <div class="alert alert-danger">{{ error }}</div>
+        }
         <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-          <div class="mb-3"><label class="form-label" for="name">Name</label><input id="name" class="form-control" formControlName="name" autocomplete="name"><div class="invalid-feedback d-block" *ngIf="submitted && form.controls.name.invalid">Name must have at least 3 characters.</div></div>
-          <div class="mb-3"><label class="form-label" for="email">Email</label><input id="email" type="email" class="form-control" formControlName="email" autocomplete="email"><div class="invalid-feedback d-block" *ngIf="submitted && form.controls.email.invalid">Enter a valid email address.</div></div>
-          <div class="mb-3"><label class="form-label" for="password">Password</label><input id="password" type="password" class="form-control" formControlName="password" autocomplete="new-password"><div class="form-text">At least 8 characters, with uppercase, lowercase, number, and special character.</div></div>
-          <div class="mb-4"><label class="form-label" for="confirmpassword">Confirm password</label><input id="confirmpassword" type="password" class="form-control" formControlName="confirmpassword" autocomplete="new-password"><div class="invalid-feedback d-block" *ngIf="submitted && form.hasError('passwordMismatch')">Passwords do not match.</div></div>
-          <button class="btn btn-primary w-100" [disabled]="loading">{{ loading ? 'Creating account...' : 'Register' }}</button>
+          <div class="mb-3">
+            <label class="form-label" for="name">Name</label
+            ><input id="name" class="form-control" formControlName="name" autocomplete="name" />
+            <div class="invalid-feedback d-block" *ngIf="submitted && form.controls.name.invalid">
+              Name must have at least 3 characters.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="email">Email</label
+            ><input
+              id="email"
+              type="email"
+              class="form-control"
+              formControlName="email"
+              autocomplete="email"
+            />
+            <div class="invalid-feedback d-block" *ngIf="submitted && form.controls.email.invalid">
+              Enter a valid email address.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="password">Password</label
+            ><input
+              id="password"
+              type="password"
+              class="form-control"
+              formControlName="password"
+              autocomplete="new-password"
+            />
+            <div class="form-text">
+              At least 8 characters, with uppercase, lowercase, number, and special character.
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label" for="confirmpassword">Confirm password</label
+            ><input
+              id="confirmpassword"
+              type="password"
+              class="form-control"
+              formControlName="confirmpassword"
+              autocomplete="new-password"
+            />
+            <div
+              class="invalid-feedback d-block"
+              *ngIf="submitted && form.hasError('passwordMismatch')"
+            >
+              Passwords do not match.
+            </div>
+          </div>
+          <button class="btn btn-primary w-100" [disabled]="loading">
+            {{ loading ? 'Creating account...' : 'Register' }}
+          </button>
         </form>
-        <p class="text-secondary text-center mt-4 mb-0">Already registered? <a routerLink="/login">Login</a></p>
+        <p class="text-secondary text-center mt-4 mb-0">
+          Already registered? <a routerLink="/login">Login</a>
+        </p>
       </div>
-    </div></div></section>
+    </div>
+  </div>
+</section>
